@@ -9,64 +9,64 @@ namespace ExFinal
 {
     public class Cola
     {
-        private Node first;
-        private Node last;
+        private Node primero;
+        private Node ultimo;
 
         private class Node
         {
-            public Cliente data;
-            public Node next, prev;
+            public Cliente dato;
+            public Node sig, ant;
 
             public Node(Cliente cliente)
             {
-                data = cliente;
-                next = null;
-                prev = null;
+                dato = cliente;
+                sig = null;
+                ant = null;
             }
         }
 
         public Cola()
         {
-            first = null;
-            last = null;
+            primero = null;
+            ultimo = null;
         }
 
-        public void Enqueue(Cliente cliente)
+        public void Encolar(Cliente cliente)
         {
             Node nPtr = new Node(cliente);
-            if (first == null)
+            if (primero == null)
             {
-                first = nPtr;
-                last = nPtr;
+                primero = nPtr;
+                ultimo = nPtr;
             }
             else
             {
-                last.next = nPtr;
-                nPtr.prev = last;
-                last = nPtr;
+                ultimo.sig = nPtr;
+                nPtr.ant = ultimo;
+                ultimo = nPtr;
             }
         }
 
-        public Cliente Dequeue()
+        public Cliente Desencolar()
         {
-            if (first == null) throw new InvalidOperationException("Cola vacía");
-            Cliente cliente = first.data;
-            first = first.next;
-            if (first != null) first.prev = null;
-            else last = null;
+            if (primero == null) throw new InvalidOperationException("Cola vacía");
+            Cliente cliente = primero.dato;
+            primero = primero.sig;
+            if (primero != null) primero.ant = null;
+            else ultimo = null;
             return cliente;
         }
 
         public int GetSize()
         {
-            int size = 0;
-            Node ptr = first;
+            int tamaño = 0;
+            Node ptr = primero;
             while (ptr != null)
             {
-                size++;
-                ptr = ptr.next;
+                tamaño++;
+                ptr = ptr.sig;
             }
-            return size;
+            return tamaño;
         }
     }
 }

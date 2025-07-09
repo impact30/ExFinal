@@ -44,7 +44,7 @@ namespace SimuladorClientes
                 if (c_Time % 2 == 0)
                 {
                     var cliente = CrearCliente();
-                    vigilancia.Enqueue(cliente);
+                    vigilancia.Encolar(cliente);
                     Console.WriteLine($"[{c_Time}] Cliente {cliente.Id} llega a Vigilancia (Tipo: {cliente.Tipo})");
                 }
 
@@ -55,7 +55,7 @@ namespace SimuladorClientes
                 {
                     if (!servAtencion[i].Ocupado && atencion.GetSize() > 0)
                     {
-                        Cliente cliente = atencion.Dequeue();
+                        Cliente cliente = atencion.Desencolar();
                         servAtencion[i].Cliente = cliente;
                         servAtencion[i].TiempoRestante = tiempoPorEtapa;
                         servAtencion[i].Ocupado = true;
@@ -72,15 +72,15 @@ namespace SimuladorClientes
                             {
                                 case TipoCliente.Movil:
                                     Console.WriteLine($"Cliente {cliente.Id} es derivado a Servicios Móviles");
-                                    serviciosMovil.Enqueue(cliente);
+                                    serviciosMovil.Encolar(cliente);
                                     break;
                                 case TipoCliente.Hogar:
                                     Console.WriteLine($"Cliente {cliente.Id} es derivado a Servicios Hogar");
-                                    serviciosHogar.Enqueue(cliente);
+                                    serviciosHogar.Encolar(cliente);
                                     break;
                                 case TipoCliente.Reclamo:
                                     Console.WriteLine($"Cliente {cliente.Id} es derivado a Reclamos");
-                                    reclamos.Enqueue(cliente);
+                                    reclamos.Encolar(cliente);
                                     break;
                             }
                             servAtencion[i].Ocupado = false;
@@ -93,16 +93,15 @@ namespace SimuladorClientes
                 ProcesarEtapa(reclamos, cajas, servReclamos, tiempoPorEtapa, "Reclamos");
                 ProcesarEtapa(cajas, null, servCajas, tiempoPorEtapa, "Caja", final: true);
 
-                Console.WriteLine($"[{c_Time}] En zonas - " +
-                    $"Vigilancia:{vigilancia.GetSize() + ContarOcupados(servVigilancia)} " +
-                    $"Recepcion:{recepcion.GetSize() + ContarOcupados(servRecepcion)} " +
-                    $"Atencion:{atencion.GetSize() + ContarOcupados(servAtencion)} " +
-                    $"ServiciosMovil:{serviciosMovil.GetSize() + ContarOcupados(servMovil)} " +
-                    $"ServiciosHogar:{serviciosHogar.GetSize() + ContarOcupados(servHogar)} " +
-                    $"Reclamos:{reclamos.GetSize() + ContarOcupados(servReclamos)} " +
-                    $"Cajas:{cajas.GetSize() + ContarOcupados(servCajas)}");
+                Console.WriteLine($"[{c_Time}] En atención - " +
+                    $"Vigilancia:{ContarAtendidos(servVigilancia)} " +
+                    $"Recepcion:{ContarAtendidos(servRecepcion)} " +
+                    $"Atencion:{ContarAtendidos(servAtencion)} " +
+                    $"Movil:{ContarAtendidos(servMovil)} " +
+                    $"Hogar:{ContarAtendidos(servHogar)} " +
+                    $"Reclamos:{ContarAtendidos(servReclamos)} " +
+                    $"Cajas:{ContarAtendidos(servCajas)}");
 
-                System.Threading.Thread.Sleep(500);
                 c_Time++;
             }
 
@@ -115,7 +114,7 @@ namespace SimuladorClientes
             {
                 if (!servidores[i].Ocupado && origen.GetSize() > 0)
                 {
-                    Cliente cliente = origen.Dequeue();
+                    Cliente cliente = origen.Desencolar();
                     servidores[i].Cliente = cliente;
                     servidores[i].TiempoRestante = tiempo;
                     servidores[i].Ocupado = true;
@@ -130,7 +129,7 @@ namespace SimuladorClientes
                         Console.WriteLine($"Cliente {cliente.Id} finaliza etapa {nombre}");
                         if (!final && destino != null)
                         {
-                            destino.Enqueue(cliente);
+                            destino.Encolar(cliente);
                         }
                         servidores[i].Ocupado = false;
                     }
@@ -140,12 +139,24 @@ namespace SimuladorClientes
 
         static int ContarOcupados(Servidor[] servidores)
         {
-            int count = 0;
+            int cont = 0;
             foreach (var s in servidores)
             {
-                if (s.Ocupado) count++;
+                if (s.Ocupado) cont++;
             }
-            return count;
+            return cont;
         }
+
+        static int ContarAtendidos(Servidor[] servidores)
+        {
+            int cont = 0;
+            foreach (var s in servidores)
+            {
+                if (s.Ocupado)
+                    cont++;
+            }
+            return cont;
+        }
+
     }
 }
