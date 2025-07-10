@@ -9,15 +9,15 @@ namespace ExFinal
 {
     public class Cola
     {
-        private Node primero;
-        private Node ultimo;
+        private Nodo primero;
+        private Nodo ultimo;
 
-        private class Node
+        private class Nodo
         {
             public Cliente dato;
-            public Node sig;
+            public Nodo sig;
 
-            public Node(Cliente cliente)
+            public Nodo(Cliente cliente)
             {
                 dato = cliente;
                 sig = null;
@@ -33,7 +33,7 @@ namespace ExFinal
         public void Encolar(Cliente cliente)
         {
 
-            Node nPuntero = new Node(cliente);
+            Nodo nPuntero = new Nodo(cliente);
             if (primero == null)
             {
                 primero = nPuntero;
@@ -60,7 +60,7 @@ namespace ExFinal
         public int GetSize()
         {
             int tamaño = 0;
-            Node puntero = primero;
+            Nodo puntero = primero;
             while (puntero != null)
             {
                 tamaño++;
