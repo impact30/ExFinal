@@ -15,13 +15,12 @@ namespace ExFinal
         private class Node
         {
             public Cliente dato;
-            public Node sig, ant;
+            public Node sig;
 
             public Node(Cliente cliente)
             {
                 dato = cliente;
                 sig = null;
-                ant = null;
             }
         }
 
@@ -33,8 +32,7 @@ namespace ExFinal
 
         public void Encolar(Cliente cliente)
         {
-            if (primero == null) 
-                Console.WriteLine("Cola vacía");
+
             Node nPuntero = new Node(cliente);
             if (primero == null)
             {
@@ -44,17 +42,18 @@ namespace ExFinal
             else
             {
                 ultimo.sig = nPuntero;
-                nPuntero.ant = ultimo;
                 ultimo = nPuntero;
             }
         }
 
         public Cliente Desencolar()
         {
+            if (primero == null)
+                Console.WriteLine("Cola vacía");
             Cliente cliente = primero.dato;
             primero = primero.sig;
-            if (primero != null) primero.ant = null;
-            else ultimo = null;
+            if (primero == null)
+            ultimo = null;
             return cliente;
         }
 
