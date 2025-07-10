@@ -13,9 +13,9 @@ namespace SimuladorClientes
     class Program
     {
         static Random rnd = new();
-        static long idCounter = 1;
+        static long idCont = 1;
 
-        static Cliente CrearCliente() => new Cliente(idCounter++, (TipoCliente)rnd.Next(1, 4));
+        static Cliente CrearCliente() => new Cliente(idCont++, (TipoCliente)rnd.Next(1, 4));
 
         static void Main(string[] args)
         {
@@ -136,17 +136,6 @@ namespace SimuladorClientes
                 }
             }
         }
-
-        static int ContarOcupados(Servidor[] servidores)
-        {
-            int cont = 0;
-            foreach (var s in servidores)
-            {
-                if (s.Ocupado) cont++;
-            }
-            return cont;
-        }
-
         static int ContarAtendidos(Servidor[] servidores)
         {
             int cont = 0;
