@@ -33,6 +33,8 @@ namespace ExFinal
 
         public void Encolar(Cliente cliente)
         {
+            if (primero == null) 
+                Console.WriteLine("Cola vacía");
             Node nPuntero = new Node(cliente);
             if (primero == null)
             {
@@ -49,7 +51,6 @@ namespace ExFinal
 
         public Cliente Desencolar()
         {
-            if (primero == null) throw new InvalidOperationException("Cola vacía");
             Cliente cliente = primero.dato;
             primero = primero.sig;
             if (primero != null) primero.ant = null;
