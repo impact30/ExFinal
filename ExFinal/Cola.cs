@@ -33,17 +33,17 @@ namespace ExFinal
 
         public void Encolar(Cliente cliente)
         {
-            Node nPtr = new Node(cliente);
+            Node nPuntero = new Node(cliente);
             if (primero == null)
             {
-                primero = nPtr;
-                ultimo = nPtr;
+                primero = nPuntero;
+                ultimo = nPuntero;
             }
             else
             {
-                ultimo.sig = nPtr;
-                nPtr.ant = ultimo;
-                ultimo = nPtr;
+                ultimo.sig = nPuntero;
+                nPuntero.ant = ultimo;
+                ultimo = nPuntero;
             }
         }
 
@@ -60,11 +60,11 @@ namespace ExFinal
         public int GetSize()
         {
             int tamaño = 0;
-            Node ptr = primero;
-            while (ptr != null)
+            Node puntero = primero;
+            while (puntero != null)
             {
                 tamaño++;
-                ptr = ptr.sig;
+                puntero = puntero.sig;
             }
             return tamaño;
         }
